@@ -33,7 +33,7 @@
                 <label for="voiture">Voiture ?</label>
                 <input name="voiture" v-bind:value="true" type="radio" v-model="car"> oui
                 <input name="voiture" v-bind:value="false" type="radio" v-model="car"> non
-                <button @click="infoAdd()">Ajouter</button>
+                <button @click="infoAdd()">Mettre à jour</button>
                 <br>
 
                 <h2>Formations</h2>
@@ -71,15 +71,16 @@
                 <h2>Enregistrer le CV</h2>
                 <button @click="toLocalStorage()">Enregistrer</button>
                 <button @click="fromLocalStorage()">Récuperer infos</button>
+                <button @click="clearLocalStorage()">Supprimer infos</button>
                 <br>
                 <hr>
 
-                <!-- <infoperso :age="age" :nom="nom" :prenom="prenom" :adresse="adresse" :car="car"></infoperso> -->
-                <infoperso :infoperso="infoPerso"></infoperso>
-                <formation :formation="formation"></formation>
-                <experiencepro :experience="experience"></experiencepro>
-                <competences :competence="competence"></competences>
+                <infoperso :info="infoPerso"></infoperso>
+                <formation :formations="formations"></formation>
+                <experiencepro :experiences="experiences"></experiencepro>
+                <competences :competences="competences"></competences>
             </div>
+
         </section>
     </main>
 

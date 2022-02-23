@@ -1,60 +1,64 @@
 let infoperso = {
     template: `
-    <div>
-    <h2>{{infoperso.nom}} {{infoperso.prenom}}</h2>
-    <p v-if="infoperso.adresse">Adresse : {{infoperso.adresse}} </p>
+    <section id="infoPerso">
+    <h2>{{info.nom}} {{info.prenom}}</h2>
+    <p v-if="info.adresse">Adresse : {{info.adresse}} </p>
     <p v-if="age">Age : {{age}} ans</p>
-    <p>Voiture : {{this.vehicule}} </p>
-</div>
+    <p v-if="vehicule">Voiture : {{this.vehicule}} </p>
+</section>
     `,
-    props: ['infoperso'],
+    props: ['info'],
     computed: {
         vehicule: function () {
-            return (this.infoperso.car) ? 'oui' : 'non'
+            if (this.info.car != undefined)
+                return (this.info.car) ? 'oui' : 'non'
         },
         age: function () {
-            if (this.infoperso.ddn) {
-                return Math.floor((new Date().getTime() - Date.parse(this.infoperso.ddn)) / (1000 * 60 * 60 * 24 * 365.25));
+            if (this.info.ddn) {
+                return Math.floor((new Date().getTime() - Date.parse(this.info.ddn)) / (1000 * 60 * 60 * 24 * 365.25));
             }
         }
     },
 };
 
-
 let formation = {
     template: `
-        <div>
-        <h2>Formations</h2>
-            <ul>
-                <li v-for="i of formation">Du {{i.dateDebut}} au {{i.dateFin}} : {{i.nom}} </li>
-            </ul>
+    <section id="formation">
+    <h2>Formations</h2>
+        <div class="formDetail" v-for="formation of formations">
+            <h3>{{formation.nom}}</h3>
+            <span>Du {{formation.dateDebut}} au {{formation.dateFin}}</span>
+            <p v-html="formation.detail"></p>
         </div>
+    </section>
     `,
-    props: ['formation'],
+    props: ['formations'],
 };
 
 let experiencepro = {
     template: `
-        <div>
-        <h2>Expériences professionnelles</h2>
-            <ul>
-                <li v-for="i of experience">Du {{i.dateDebut}} au {{i.dateFin}} : {{i.fonction}}</li>
-            </ul>
+    <section id="experience">
+    <h2>Expériences professionnelles</h2>
+        <div class="exp" v-for="exp of experiences">
+            <h3>{{exp.fonction}}</h3>
+            <span>Du {{exp.dateDebut}} au {{exp.dateFin}}</span>
+            <p>{{exp.detail}}</p>
         </div>
+    </section>
     `,
-    props: ['experience'],
+    props: ['experiences'],
 };
 
 let competences = {
     template: `
-        <div>
+        <section id="competences">
         <h2>Compétences</h2>
             <ul>
-                <li v-for="i of competence">{{i.competence}}</li>
+                <li v-for="competence of competences">{{competences.competence}}</li>
             </ul>
-        </div>
+        </section>
     `,
-    props: ['competence'],
+    props: ['competences'],
 };
 
 let vm = new Vue({
@@ -64,20 +68,20 @@ let vm = new Vue({
         prenom: '',
         dateNaissance: null,
         adresse: '',
-        car: false,
+        car: null,
         intitule: null,
         formDateDebut: null,
         formDateFin: null,
         formDetail: '',
-        formation: [],
+        formations: [],
         fonction: null,
         fctDateDebut: null,
         fctDateFin: null,
         expDetail: null,
-        experience: [],
+        experiences: [],
         comp: null,
-        competence: [],
-        infoPerso: [{ adresse: 'toto' }],
+        competences: [],
+        infoPerso: [],
     },
     created: function () {
 
@@ -97,15 +101,16 @@ let vm = new Vue({
         formAdd: function () {
             let start = Intl.DateTimeFormat("fr-FR").format(Date.parse(this.formDateDebut)).toString();
             let end = Intl.DateTimeFormat("fr-FR").format(Date.parse(this.formDateFin)).toString();
-            this.formation.push({ nom: this.intitule, dateDebut: start, dateFin: end, detail: this.formDetail });
+            let detail = this.formDetail.replaceAll("\n", "<br/>");
+            this.formations.push({ nom: this.intitule, dateDebut: start, dateFin: end, detail: detail });
         },
         expAdd: function () {
             let start = Intl.DateTimeFormat("fr-FR").format(Date.parse(this.fctDateDebut)).toString();
             let end = Intl.DateTimeFormat("fr-FR").format(Date.parse(this.fctDateFin)).toString();
-            this.experience.push({ fonction: this.fonction, dateDebut: start, dateFin: end, detail: this.expDetail });
+            this.experiences.push({ fonction: this.fonction, dateDebut: start, dateFin: end, detail: this.expDetail });
         },
         compAdd: function () {
-            this.competence.push({ competence: this.comp });
+            this.competences.push({ competence: this.comp });
         },
         toLocalStorage: function () {
             //localStorage.setItem('clé', 'valeur')
