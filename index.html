@@ -14,74 +14,98 @@
 </head>
 
 <body>
-    <!---------CONTENU PRINCIPAL------------>
-
     <main>
-        <section class="conteneur">
-            <h1>Application CV</h1>
-            <hr>
-            <div id="app">
-                <h2>Données personnelles</h2>
-                <label for="nom">Nom : </label>
-                <input name="nom" type="text" v-model="nom">
-                <label for="prenom">Prénom : </label>
-                <input name="prenom" type="text" v-model="prenom">
-                <label for="prenom">Adresse : </label>
-                <input name="adresse" type="text" v-model="adresse"> <br>
-                <label for="dateNaissance">Date de naissance : </label>
-                <input name="dateDeNaissance" type="date" v-model.date="dateNaissance">
-                <label for="voiture">Voiture ?</label>
-                <input name="voiture" v-bind:value="true" type="radio" v-model="car"> oui
-                <input name="voiture" v-bind:value="false" type="radio" v-model="car"> non
-                <button @click="infoAdd()">Mettre à jour</button>
-                <br>
-
-                <h2>Formations</h2>
-                <label for="formation">Intitulé : </label>
-                <input name="formation" type="text" v-model="intitule">
-                <label for="dateDebutForm">De :</label>
-                <input name="dateDebutForm" type="date" v-model="formDateDebut">
-                <label for="dateFinForm">A :</label>
-                <input name="dateFinForm" type="date" v-model="formDateFin"> <br>
-                <textarea name="detailform" placeholder="Détail de la formation" id="detailform" cols="100" rows="4"
-                    v-model="formDetail"></textarea>
-                <br>
-                <button @click="formAdd()">Ajouter</button>
-                <br>
-
-
-                <h2>Expériences professionnelles</h2>
-                <label for="experience">Fonction :</label>
-                <input name="experience" type="text" v-model="fonction">
-                <label for="dateDebutExp">De :</label>
-                <input name="dateDebutExp" type="date" v-model="fctDateDebut">
-                <label for="dateFinExp">A :</label>
-                <input name="dateFinExp" type="date" v-model="fctDateFin">
-                <textarea name="detailexp" placeholder="Détail du poste" id="detailexp" cols="100" rows="4"
-                    v-model="expDetail"></textarea>
-                <br>
-                <button @click="expAdd()">Ajouter</button>
-                <br>
-
-                <h2>Compétences</h2>
-                <label for="competence">Ajouter une compétence : </label>
-                <input name="competence" type="text" v-model="comp">
-                <button @click="compAdd()">Ajouter</button>
-
-                <h2>Enregistrer le CV</h2>
-                <button @click="toLocalStorage()">Enregistrer</button>
-                <button @click="fromLocalStorage()">Récuperer infos</button>
-                <button @click="clearLocalStorage()">Supprimer infos</button>
-                <br>
+        <div id="app">
+            <section class="conteneur">
+                <h1>Application CV</h1>
                 <hr>
 
-                <infoperso :info="infoPerso"></infoperso>
-                <formation :formations="formations"></formation>
-                <experiencepro :experiences="experiences"></experiencepro>
-                <competences :competences="competences"></competences>
-            </div>
+                <div class="flex">
 
-        </section>
+                    <div>
+                        <h2>Données personnelles</h2>
+                        <input placeholder="Nom" name="nom" type="text" v-model="nom" required>
+                        <input placeholder="Prénom" name="prenom" type="text" v-model="prenom" required> <br>
+                        <input placeholder="Adresse" name="adresse" size="46" type="text" v-model="adresse"
+                            required><br>
+                        <input placeholder="Telephone" type="tel" pattern="[0-9]{2}" v-model="phone">
+                        <input type="email" placeholder="Email" id="email" pattern=".+@.+." v-model="mail">
+                        <br>
+                        <label for="dateNaissance">Date de naissance :</label>
+                        <input name="dateDeNaissance" type="date" v-model.date="dateNaissance" required>
+
+                        <label for="voiture">Voiture </label>
+                        <input name="voiture" v-bind:value="true" type="radio" v-model="car"> oui
+                        <input name="voiture" v-bind:value="false" type="radio" v-model="car"> non <br>
+                        <button @click="infoAdd()">Mettre à jour</button>
+                    </div>
+                    <div>
+                        <h2>Photo de profil</h2>
+                        <input type="text" placeholder="url de la photo" id="photo" v-model="url" name="photo">
+                        <button @click="addPicture()">Ajouter</button>
+                        <br>
+                        <h2>Compétences</h2>
+                        <input placeholder="Ajouter une compétence" name="competence" type="text" v-model="comp">
+                        <button @click="compAdd()">Ajouter</button>
+
+
+                    </div>
+
+
+                    <div>
+
+                    </div>
+
+
+                </div>
+
+                <br>
+
+                <div>
+                    <h2>Formations</h2>
+                    <input placeholder="Intitulé de la formation" name="formation" type="text" v-model="intitule">
+                    <label for="dateDebutForm">De :</label>
+                    <input name="dateDebutForm" type="date" v-model="formDateDebut">
+                    <label for="dateFinForm">à :</label>
+                    <input name="dateFinForm" type="date" v-model="formDateFin"> <br>
+                    <textarea name="detailform" placeholder="Détail de la formation" id="detailform" cols="100" rows="4"
+                        v-model="formDetail"></textarea>
+                    <br>
+                    <button @click="formAdd()">Ajouter</button>
+                    <br>
+                </div>
+                <div>
+                    <h2>Expériences professionnelles</h2>
+                    <input placeholder="Fonction" name="experience" type="text" v-model="fonction">
+                    <label for="dateDebutExp">De :</label>
+                    <input name="dateDebutExp" type="date" v-model="fctDateDebut">
+                    <label for="dateFinExp">à :</label>
+                    <input name="dateFinExp" type="date" v-model="fctDateFin">
+                    <textarea name="detailexp" placeholder="Détail du poste" id="detailexp" cols="100" rows="4"
+                        v-model="expDetail"></textarea>
+                    <br>
+                    <button @click="expAdd()">Ajouter</button>
+                </div>
+                <br>
+                <div>
+
+
+                    <h2>Enregistrer le CV</h2>
+                    <button @click="toLocalStorage()">Enregistrer</button>
+                    <button @click="clearLocalStorage()">Supprimer infos</button>
+                </div>
+                <br>
+                <hr>
+            </section>
+
+            <infoperso :info="infoPerso" :trombi="trombi"></infoperso>
+            <formation :formations="formations"></formation>
+            <experiencepro :experiences="experiences"></experiencepro>
+            <competences :competences="competences"></competences>
+
+
+        </div>
+
     </main>
 
 
