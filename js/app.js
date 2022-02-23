@@ -1,19 +1,25 @@
 let infoperso = {
     template: `
     <div>
-    <h2>{{nom}} {{prenom}}</h2>
-    <p v-if="adresse">Adresse : {{adresse}} </p>
+    <h2>{{infoperso.nom}} {{infoperso.prenom}}</h2>
+    <p v-if="infoperso.adresse">Adresse : {{infoperso.adresse}} </p>
     <p v-if="age">Age : {{age}} ans</p>
-    <p>Voiture : {{vehicule}} </p>
+    <p>Voiture : {{this.vehicule}} </p>
 </div>
     `,
-    props: ['age', 'nom', 'prenom', 'adresse', 'car'],
+    props: ['infoperso'],
     computed: {
         vehicule: function () {
-            return (this.car) ? 'oui' : 'non'
+            return (this.infoperso.car) ? 'oui' : 'non'
         },
+        age: function () {
+            if (this.infoperso.ddn) {
+                return Math.floor((new Date().getTime() - Date.parse(this.infoperso.ddn)) / (1000 * 60 * 60 * 24 * 365.25));
+            }
+        }
     },
 };
+
 
 let formation = {
     template: `
@@ -62,14 +68,16 @@ let vm = new Vue({
         intitule: null,
         formDateDebut: null,
         formDateFin: null,
+        formDetail: '',
         formation: [],
         fonction: null,
         fctDateDebut: null,
         fctDateFin: null,
+        expDetail: null,
         experience: [],
         comp: null,
         competence: [],
-        infoperso: [],
+        infoPerso: [{ adresse: 'toto' }],
     },
     created: function () {
 
@@ -83,22 +91,28 @@ let vm = new Vue({
     },
     methods: {
         infoAdd: function () {
-            let date = this.dateNaissance.toString()
-            this.infoperso = [{ ddn: date }, { nom: this.nom }, { prenom: this.prenom }, { adresse: this.adresse }, { car: this.car }];
+            let date = this.dateNaissance.toString();
+            this.infoPerso = { ddn: date, nom: this.nom, prenom: this.prenom, adresse: this.adresse, car: this.car };
         },
         formAdd: function () {
             let start = Intl.DateTimeFormat("fr-FR").format(Date.parse(this.formDateDebut)).toString();
             let end = Intl.DateTimeFormat("fr-FR").format(Date.parse(this.formDateFin)).toString();
-            this.formation.push({ nom: this.intitule, dateDebut: start, dateFin: end });
+            this.formation.push({ nom: this.intitule, dateDebut: start, dateFin: end, detail: this.formDetail });
         },
         expAdd: function () {
             let start = Intl.DateTimeFormat("fr-FR").format(Date.parse(this.fctDateDebut)).toString();
             let end = Intl.DateTimeFormat("fr-FR").format(Date.parse(this.fctDateFin)).toString();
-            this.experience.push({ fonction: this.fonction, dateDebut: start, dateFin: end });
+            this.experience.push({ fonction: this.fonction, dateDebut: start, dateFin: end, detail: this.expDetail });
         },
         compAdd: function () {
             this.competence.push({ competence: this.comp });
         },
+        toLocalStorage: function () {
+            //localStorage.setItem('clé', 'valeur')
+        },
+        fromLocalStorage: function () {
+            //localStorage.getItem('clé')
+        }
     },
     components: {
         infoperso,

@@ -42,7 +42,10 @@
                 <label for="dateDebutForm">De :</label>
                 <input name="dateDebutForm" type="date" v-model="formDateDebut">
                 <label for="dateFinForm">A :</label>
-                <input name="dateFinForm" type="date" v-model="formDateFin">
+                <input name="dateFinForm" type="date" v-model="formDateFin"> <br>
+                <textarea name="detailform" placeholder="Détail de la formation" id="detailform" cols="100" rows="4"
+                    v-model="formDetail"></textarea>
+                <br>
                 <button @click="formAdd()">Ajouter</button>
                 <br>
 
@@ -54,6 +57,9 @@
                 <input name="dateDebutExp" type="date" v-model="fctDateDebut">
                 <label for="dateFinExp">A :</label>
                 <input name="dateFinExp" type="date" v-model="fctDateFin">
+                <textarea name="detailexp" placeholder="Détail du poste" id="detailexp" cols="100" rows="4"
+                    v-model="expDetail"></textarea>
+                <br>
                 <button @click="expAdd()">Ajouter</button>
                 <br>
 
@@ -63,12 +69,13 @@
                 <button @click="compAdd()">Ajouter</button>
 
                 <h2>Enregistrer le CV</h2>
-                <button>Enregistrer</button>
-
+                <button @click="toLocalStorage()">Enregistrer</button>
+                <button @click="fromLocalStorage()">Récuperer infos</button>
                 <br>
                 <hr>
 
-                <infoperso :age="age" :nom="nom" :prenom="prenom" :adresse="adresse" :car="car"></infoperso>
+                <!-- <infoperso :age="age" :nom="nom" :prenom="prenom" :adresse="adresse" :car="car"></infoperso> -->
+                <infoperso :infoperso="infoPerso"></infoperso>
                 <formation :formation="formation"></formation>
                 <experiencepro :experience="experience"></experiencepro>
                 <competences :competence="competence"></competences>
