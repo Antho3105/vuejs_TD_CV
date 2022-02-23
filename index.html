@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Test JavaScript</title>
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="CV Vue.js" content="#" />
+    <link rel="shortcut icon" href="#" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+
+<body>
+    <!---------CONTENU PRINCIPAL------------>
+
+    <main>
+        <section class="conteneur">
+            <h1>Application CV</h1>
+            <hr>
+            <div id="app">
+                <h2>Données personnelles</h2>
+                <label for="nom">Nom : </label>
+                <input name="nom" type="text" v-model="nom">
+                <label for="prenom">Prénom : </label>
+                <input name="prenom" type="text" v-model="prenom">
+                <label for="prenom">Adresse : </label>
+                <input name="adresse" type="text" v-model="adresse"> <br>
+                <label for="dateNaissance">Date de naissance : </label>
+                <input name="dateDeNaissance" type="date" v-model.date="dateNaissance">
+                <label for="voiture">Voiture ?</label>
+                <input name="voiture" v-bind:value="true" type="radio" v-model="car"> oui
+                <input name="voiture" v-bind:value="false" type="radio" v-model="car"> non
+                <button @click="infoAdd()">Ajouter</button>
+                <br>
+
+                <h2>Formations</h2>
+                <label for="formation">Intitulé : </label>
+                <input name="formation" type="text" v-model="intitule">
+                <label for="dateDebutForm">De :</label>
+                <input name="dateDebutForm" type="date" v-model="formDateDebut">
+                <label for="dateFinForm">A :</label>
+                <input name="dateFinForm" type="date" v-model="formDateFin">
+                <button @click="formAdd()">Ajouter</button>
+                <br>
+
+
+                <h2>Expériences professionnelles</h2>
+                <label for="experience">Fonction :</label>
+                <input name="experience" type="text" v-model="fonction">
+                <label for="dateDebutExp">De :</label>
+                <input name="dateDebutExp" type="date" v-model="fctDateDebut">
+                <label for="dateFinExp">A :</label>
+                <input name="dateFinExp" type="date" v-model="fctDateFin">
+                <button @click="expAdd()">Ajouter</button>
+                <br>
+
+                <h2>Compétences</h2>
+                <label for="competence">Ajouter une compétence : </label>
+                <input name="competence" type="text" v-model="comp">
+                <button @click="compAdd()">Ajouter</button>
+
+                <h2>Enregistrer le CV</h2>
+                <button>Enregistrer</button>
+
+                <br>
+                <hr>
+
+                <infoperso :age="age" :nom="nom" :prenom="prenom" :adresse="adresse" :car="car"></infoperso>
+                <formation :formation="formation"></formation>
+                <experiencepro :experience="experience"></experiencepro>
+                <competences :competence="competence"></competences>
+            </div>
+        </section>
+    </main>
+
+
+</body>
+
+<script async src="js/app.js"></script>
+
+</html>
