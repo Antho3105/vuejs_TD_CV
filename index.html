@@ -46,17 +46,17 @@
                         <br>
                         <h2>Compétences</h2>
                         <input placeholder="Ajouter une compétence" name="competence" type="text" v-model="skill">
-                        <button @click="compAdd()">Ajouter</button>
+                        <button @click="compAdd()">Ajouter</button> <br>
+                        <skilldelete :skills="skills" v-on:delete-skill="deleteSkills"></skilldelete>
                     </div>
-                    <div>
-                    </div>
+
                 </div>
 
                 <br>
 
                 <div>
                     <h2>Formations</h2>
-                    <input placeholder="Intitulé de la formation" name="formation" type="text" v-model="intitule">
+                    <input placeholder="Intitulé de la formation" name="formation" type="text" v-model="grade">
                     <label for="dateDebutForm">De :</label>
                     <input name="dateDebutForm" type="date" v-model="formDateStart">
                     <label for="dateFinForm">à :</label>
@@ -69,13 +69,13 @@
                 </div>
                 <div>
                     <h2>Expériences professionnelles</h2>
-                    <input placeholder="Fonction" name="experience" type="text" v-model="fonction">
+                    <input placeholder="Fonction" name="experience" type="text" v-model="jobTitle">
                     <label for="dateDebutExp">De :</label>
-                    <input name="dateDebutExp" type="date" v-model="expDateStart">
+                    <input name="dateDebutExp" type="date" v-model="jobDateStart">
                     <label for="dateFinExp">à :</label>
-                    <input name="dateFinExp" type="date" v-model="expDateEnd">
+                    <input name="dateFinExp" type="date" v-model="jobDateEnd">
                     <textarea name="detailexp" placeholder="Détail du poste" id="detailexp" cols="100" rows="4"
-                        v-model="expDetail"></textarea>
+                        v-model="jobDetail"></textarea>
                     <br>
                     <button @click="expAdd()">Ajouter</button>
                 </div>
@@ -86,23 +86,22 @@
                     <h2>Enregistrer le CV</h2>
                     <button @click="toLocalStorage()">Enregistrer</button>
                     <button @click="clearLocalStorage()">Supprimer infos</button>
-                    <button @click="testfct">test</button>
                 </div>
                 <br>
                 <hr>
             </section>
 
-            <infoperso :info="infoPerso" :trombi="trombi"></infoperso>
+            <infoperso :info="personalInfo" :trombi="trombi"></infoperso>
             <formation :schools="schools"></formation>
-            <experiencepro :experiences="history"></experiencepro>
+            <experiencepro :experiences="experiences"></experiencepro>
             <competences :competences="skills"></competences>
 
 
         </div>
 
+        <!--- Zone test hors Vue.js  -->
+
     </main>
-
-
 </body>
 
 <script async src="js/app.js"></script>

@@ -29,26 +29,52 @@ let infoperso = {
     },
 };
 
+let skilldelete = {
+    template: `
+<div v-if="skills.length >0">
+    <select v-model="selectedSkill" name="" id="">
+<option v-for="(item, index) of skills" :value="index">{{item}}</option>
+</select>
+<button @click="sendDeleteOrder()">Supprimer</button>
+</div>
+    `,
+    data: function () {
+        return {
+            selectedSkill: 0
+        };
+
+    },
+    props: ['skills'],
+    methods: {
+        sendDeleteOrder: function () {
+            this.$emit('delete-skill', this.selectedSkill);
+        }
+    },
+
+};
+
+
 let formation = {
     template: `
-    <section v-if="schools" id="formation" class="conteneur">
-    <h2>Formations</h2>
+    <section v-if="schools.length >0" id="formation" class="conteneur">
+    <h2 v-if="schools.length > 0">Formations</h2>
         <div class="formDetail" v-for="school of schools">
-            <h3>{{school.nom}}</h3>
+            <h3>{{school.name}}</h3>
             <span>Du {{school.start}} au {{school.end}}</span>
             <p v-html="school.detail"></p>
-        </div>
+            </div>
     </section>
+
     `,
     props: ['schools'],
 };
 
 let experiencepro = {
     template: `
-    <section v-if="experiences" id="experience" class="conteneur">
+    <section v-if="experiences.length > 0" id="experience" class="conteneur">
     <h2>Expériences professionnelles</h2>
         <div class="exp" v-for="experience of experiences">
-            <h3>{{experience.fonction}}</h3>
+            <h3>{{experience.jobTitle}}</h3>
             <span>Du {{experience.start}} au {{experience.end}}</span>
             <p v-html="experience.detail"></p>
         </div>
@@ -59,12 +85,14 @@ let experiencepro = {
 
 let competences = {
     template: `
-        <section v-if="competences" id="competences" class="conteneur">
+        <section v-if="competences.length > 0" id="competences" class="conteneur">
         <h2>Compétences</h2>
             <ul>
                 <li v-for="competence of competences">{{competence}}</li>
             </ul>
+
         </section>
+        
     `,
     props: ['competences'],
 };
@@ -80,19 +108,19 @@ let vm = new Vue({
         mail: null,
         url: null,
         car: null,
-        intitule: null,
+        grade: null,
         formDateStart: null,
         formDateEnd: null,
         formDetail: null,
-        schools: [],
-        fonction: null,
-        expDateStart: null,
-        expDateEnd: null,
-        expDetail: null,
-        history: [],
-        skill: null,
+        jobTitle: null,
+        jobDateStart: null,
+        jobDateEnd: null,
+        jobDetail: null,
+        personalInfo: null,
         skills: [],
-        infoPerso: null,
+        schools: [],
+        experiences: [],
+        skill: null,
         trombi: null,
     },
     created: function () {
@@ -112,28 +140,28 @@ let vm = new Vue({
         infoAdd: function () {
             if (this.lastName != null && this.firstName != null && this.birthDate != null && this.adress != null && this.phone != null && this.mail != null && this.car != null) {
                 let date = this.birthDate.toString();
-                this.infoPerso = { birthDate: date, lastName: this.lastName, firstName: this.firstName, adress: this.adress, car: this.car, email: this.mail, phone: this.phone };
+                this.personalInfo = { birthDate: date, lastName: this.lastName, firstName: this.firstName, adress: this.adress, car: this.car, email: this.mail, phone: this.phone };
             } else alert('Veuillez completer le formulaire !');
         },
         formAdd: function () {
             let start = Intl.DateTimeFormat("fr-FR").format(Date.parse(this.formDateStart)).toString();
             let end = Intl.DateTimeFormat("fr-FR").format(Date.parse(this.formDateEnd)).toString();
             let detail = this.formDetail.replaceAll("\n", "<br/>");
-            this.schools.push({ nom: this.intitule, start: start, end: end, detail: detail });
-            this.intitule = null;
+            this.schools.push({ name: this.grade, start: start, end: end, detail: detail });
+            this.grade = null;
             this.formDateStart = null;
             this.formDateEnd = null;
             this.formDetail = null;
         },
         expAdd: function () {
-            let start = Intl.DateTimeFormat("fr-FR").format(Date.parse(this.expDateStart)).toString();
-            let end = Intl.DateTimeFormat("fr-FR").format(Date.parse(this.expDateEnd)).toString();
-            let detail = this.expDetail.replaceAll("\n", "<br/>");
-            this.history.push({ fonction: this.fonction, start: start, end: end, detail: detail });
-            this.expDateStart = null;
-            this.expDateEnd = null;
-            this.fonction = null;
-            this.expDetail = null;
+            let start = Intl.DateTimeFormat("fr-FR").format(Date.parse(this.jobDateStart)).toString();
+            let end = Intl.DateTimeFormat("fr-FR").format(Date.parse(this.jobDateEnd)).toString();
+            let detail = this.jobDetail.replaceAll("\n", "<br/>");
+            this.experiences.push({ jobTitle: this.jobTitle, start: start, end: end, detail: detail });
+            this.jobDateStart = null;
+            this.jobDateEnd = null;
+            this.jobTitle = null;
+            this.jobDetail = null;
         },
         clear: function () {
             this.lastName = null;
@@ -145,21 +173,33 @@ let vm = new Vue({
             this.car = null;
         },
         compAdd: function () {
-            this.skills.push(this.skill);
+            if (this.skill) {
+                this.skills.push(this.skill);
+                this.skill = null;
+            }
         },
         addPicture: function () {
+
             this.trombi = this.url
         },
         toLocalStorage: function () {
             localStorage.setItem('cv', JSON.stringify(this.$data))
         },
         clearLocalStorage: function () {
-            if (confirm("Confirmez vous la suppression ?"))
+            if (confirm("Confirmez vous la suppression ?")) {
                 localStorage.removeItem('cv');
+                location.reload();
+                return false;
+            }
         },
         testfct: function () {
-            for (comp of this.skills) console.log(comp)
+            for (comp of this.skills) console.log(comp);
             console.log(this.skills[0])
+        },
+        deleteSkills: function (index) {
+            if (index < this.skills.length) {
+                this.skills.splice(index, 1);
+            }
         }
     },
     components: {
@@ -167,5 +207,6 @@ let vm = new Vue({
         formation,
         experiencepro,
         competences,
+        skilldelete,
     }
 });
