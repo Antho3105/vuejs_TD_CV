@@ -31,7 +31,7 @@ let infoperso = {
 
 let skilldelete = {
     template: `
-<div v-if="skills.length >0">
+<div v-if="skills.length > 0">
     <select v-model="selectedSkill" name="" id="">
 <option v-for="(item, index) of skills" :value="index">{{item}}</option>
 </select>
@@ -50,9 +50,7 @@ let skilldelete = {
             this.$emit('delete-skill', this.selectedSkill);
         }
     },
-
 };
-
 
 let formation = {
     template: `
@@ -64,7 +62,6 @@ let formation = {
             <p v-html="school.detail"></p>
             </div>
     </section>
-
     `,
     props: ['schools'],
 };
@@ -192,13 +189,12 @@ let vm = new Vue({
                 return false;
             }
         },
-        testfct: function () {
-            for (comp of this.skills) console.log(comp);
-            console.log(this.skills[0])
-        },
         deleteSkills: function (index) {
             if (index < this.skills.length) {
                 this.skills.splice(index, 1);
+                if (confirm("Voulez vous mettre à jour le local storage ?")) {
+                    localStorage.setItem('cv', JSON.stringify(this.$data))
+                }
             }
         }
     },
